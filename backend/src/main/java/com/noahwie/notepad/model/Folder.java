@@ -15,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Folder {
     /** Unique identifier of the folder (primary key). */
@@ -28,6 +27,13 @@ public class Folder {
 
     /** Timestamp when the folder was created. */
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public Folder(Long id, String name, LocalDateTime createdAt, List<Note> notes) {
+        this.id = id;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.notes = notes;
+    }
 
     /** List of notes that belong to this folder. */
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)

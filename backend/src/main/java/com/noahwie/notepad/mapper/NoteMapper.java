@@ -3,6 +3,7 @@ package com.noahwie.notepad.mapper;
 import com.noahwie.notepad.dto.NoteDto;
 import com.noahwie.notepad.model.Note;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
  * MapStruct mapper interface for converting between Note entities and NoteDto objects.
@@ -10,6 +11,7 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface NoteMapper {
+    NoteMapper INSTANCE = Mappers.getMapper(NoteMapper.class);
 
     /**
      * Converts a Note entity into a NoteDto.
