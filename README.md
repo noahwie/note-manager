@@ -1,4 +1,4 @@
-# Notepad+++
+# Note Manager
 
 A simple note-taking application designed for organizing projects and ideas. Users can **create folders** for different topics/projects and **add, read, edit, or delete notes** inside them.
 
