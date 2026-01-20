@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // base URL
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8080';
 
 // Axios Instance mit Basis-Konfiguration
 const API = axios.create({
@@ -83,5 +83,37 @@ export const deleteNote = (id) => API.delete(`/notes/${id}`);
 // missing api
 export const login = (username, password) => console.log('logged in with ', username , ' + ', password); // API.post(`/auth/login, data);
 export const logout = () => console.log('logout'); // API.post(`/auth/logout);
-export const getUsers = () => console.log('Get all users');
+export const getUsers = () => {
+  console.log('Get all users');
+  return [
+    {
+      "id": 1,
+      "username": "alice",
+      "email": "alice@example.com",
+      "passwordHash": "$2b$10$KIXk1zB7Fj1Hz2G0C.VfN.7Y7uE6JXzNzfC9VgxHhQG2k3W8Bk4xG" 
+      // plaintext: "password123"
+    },
+    {
+      "id": 2,
+      "username": "bob",
+      "email": "bob@example.com",
+      "passwordHash": "$2b$10$VJj6a/1F5YXlZ3MeCNY8FOWxUOc2jR96O/3bHxj9A0wVv0t/2RZGy"
+      // plaintext: "securepass"
+    },
+    {
+      "id": 3,
+      "username": "carol",
+      "email": "carol@example.com",
+      "passwordHash": "$2b$10$Lh3fzFpM7sV1N1TR/2yPoebw5Wz3aFhXehF0w4PwqBsuYyQ5kYv7W"
+      // plaintext: "mysecretpwd"
+    },
+    {
+      "id": 4,
+      "username": "dave",
+      "email": "dave@example.com",
+      "passwordHash": "$2b$10$wQzXhQ7K0v1WfMq0qv8Z0eP7xV6U6xK3QH/t0hEoKpD3m2FZ.4kK6"
+      // plaintext: "letmein123"
+    }
+  ]
+};
 export const updateUuser = (id) => console.log('User updated width the id: ', id);
