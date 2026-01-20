@@ -6,6 +6,8 @@ import Login from "./pages/Login";  // ← NEU
 import Forbidden from './pages/Forbidden'; // ← NEU
 import ProtectedRoute from "./components/protected-route";
 import MainPage from "./pages/MainPage";
+import Admin from "./pages/Admin";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -23,16 +25,24 @@ function App() {
             </ProtectedRoute>
           } 
         />
+        <Route 
+          path="user" 
+          element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          } 
+        />
 
         {/* Admin Route - nur für ADMIN Rolle */}
-        {/* <Route 
+        <Route 
           path="admin" 
           element={
             <ProtectedRoute requiredRole="ADMIN">
-              <AdminPage />
+              <Admin />
             </ProtectedRoute>
           } 
-        /> */}
+        />
 
         {/* 404 Page */}
         <Route path="*" element={<PageNotFound />} />
