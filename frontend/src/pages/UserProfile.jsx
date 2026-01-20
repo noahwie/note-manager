@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { updateUserPassword } from "../services/api"; // API must verify old password
+import { updateUserPasswordAsAdmin } from "../services/api"; // API must verify old password
 
 const UserProfile = () => {
   const { user } = useAuth();
@@ -20,7 +20,7 @@ const UserProfile = () => {
     setLoading(true);
     try {
       // API call should verify old password and update to new password
-      await updateUserPassword(user.id, oldPassword, newPassword);
+      await updateUserPasswordAsAdmin(user.id, oldPassword, newPassword);
       alert("Password updated successfully!");
       setOldPassword("");
       setNewPassword("");
