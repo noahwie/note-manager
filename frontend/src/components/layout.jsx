@@ -7,9 +7,11 @@ const Layout = () => {
   return (
     <div className="App">
       <header className="App-header">
+        <div className="Header-2">
+          <img src="/vite.svg" className="App-logo" alt="logo" />
+          <h1>Note Manager</h1>
+        </div>
         <Navigation />
-        <img src="/vite.svg" className="App-logo" alt="logo" />
-        <h1>Willkommen beim Note Manager</h1>
       </header>
 
       <main className="layout-main-content">

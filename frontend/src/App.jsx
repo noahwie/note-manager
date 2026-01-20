@@ -16,7 +16,7 @@ function App() {
         <Route path="forbidden" element={<Forbidden />} />
         {/* Geschützte Routes - nur für eingeloggte User */}
         <Route 
-          path="home" 
+          path="" 
           element={
             <ProtectedRoute>
               <MainPage />

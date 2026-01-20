@@ -23,28 +23,36 @@ const Navigation = () => {
           =================================== */}
       {isAuthenticated && (
         <>
-        <Link to="/">Home</Link>
-        <Link to="/admin">Quiz</Link>
-        <Link to="/settings">Regeln</Link>
+        <button style={{ 
+                color: '#ffffffff', 
+                fontWeight: 'bold',
+                padding: '5px 10px',
+                backgroundColor:'#2a2a2a',
+                borderRadius: '4px',
+                
+            }}>
+            <Link to="/admin">admin</Link>
+        </button>
+        
         </>
       )}
 
       {/* ===================================
           AUTH BUTTONS
           =================================== */}
-      <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         {isAuthenticated ? (
           // Eingeloggt: Zeige Username + Logout
           <>
-            <span style={{ 
-              color: '#28a745', 
+            <button style={{ 
+              color: '#fdfdfdff', 
               fontWeight: 'bold',
               padding: '5px 10px',
-              backgroundColor: 'rgba(40, 167, 69, 0.1)',
+              backgroundColor:'#2a2a2a',
               borderRadius: '4px'
             }}>
               👤 {user?.username || 'User'}
-            </span>
+            </button>
             <button 
               onClick={handleLogout}
               style={{
@@ -61,8 +69,11 @@ const Navigation = () => {
             </button>
           </>
         ) : (
+            <button>
+                <Link to="/login">Login</Link>
+            </button>
           // Nicht eingeloggt: Zeige Login Link
-          <Link to="/login">Login</Link>
+          
         )}
       </div>
     </nav>
