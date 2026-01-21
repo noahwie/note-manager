@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.management.relation.Role;
-
 @Entity
 @Table(name = "app_users")
 @Getter
