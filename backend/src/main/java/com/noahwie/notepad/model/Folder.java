@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Folder {
     /** Unique identifier of the folder (primary key). */
@@ -38,4 +39,8 @@ public class Folder {
     /** List of notes that belong to this folder. */
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Note> notes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by_user_id")
+    private AppUser createdBy;
 }
