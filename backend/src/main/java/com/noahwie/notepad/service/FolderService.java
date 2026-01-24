@@ -2,9 +2,11 @@ package com.noahwie.notepad.service;
 
 import com.noahwie.notepad.dto.FolderDto;
 import com.noahwie.notepad.mapper.FolderMapper;
+import com.noahwie.notepad.model.AppUser;
 import com.noahwie.notepad.model.Folder;
 import com.noahwie.notepad.repository.FolderRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,8 +30,8 @@ public class FolderService {
      * Retrieves all folders from the database and maps them to DTOs.
      * @return list of all folders as FolderDto
      */
-    public List<FolderDto> getAllFolders() {
-        return folderRepository.findAll()
+    public List<FolderDto> getAllFolders(AppUser user) {
+        return folderRepository.findByCreatedBy(user)
                 .stream()
                 .map(folderMapper::toDto)
                 .toList();
@@ -52,9 +54,10 @@ public class FolderService {
      * @param folderDto DTO containing name
      * @return the saved FolderDto
      */
-    public FolderDto createFolder(FolderDto folderDto) {
+    public FolderDto createFolder(@AuthenticationPrincipal AppUser user, FolderDto folderDto) {
         Folder folder = folderMapper.toEntity(folderDto);
         folder.setCreatedAt(LocalDateTime.now());
+        folder.setCreatedBy(user);
         Folder savedFolder = folderRepository.save(folder);
         return folderMapper.toDto(savedFolder);
     }

@@ -49,25 +49,28 @@ function Sidebar({ onFolderSelect, selectedFolder, onFolderDeleted }) {
 
   return (
     <div className="sidebar">
-      <button onClick={() => setShowPopup(true)} className="new-folder-btn">
-        New Folder +
-      </button>
-
-      {folders.map((folder) => (
-        <FolderItem
-          key={folder.id}
-          folder={folder}
-          onClick={() => handleFolderClick(folder)}
-          onDelete={handleDeleteFolder}
-        />
-      ))}
-
-      {showPopup && (
-        <PopupFolder
-          onClose={() => setShowPopup(false)}
-          onCreate={handleCreateSuccess}
-        />
-      )}
+      <div className="sidebar-button">
+        <button onClick={() => setShowPopup(true)} className="new-folder-btn">
+          New Folder +
+        </button>
+      </div>
+      <div className="sidebar-folders">
+        {folders.map((folder) => (
+          <FolderItem
+            key={folder.id}
+            folder={folder}
+            onClick={() => handleFolderClick(folder)}
+            onDelete={handleDeleteFolder}
+          />
+        ))}
+  
+        {showPopup && (
+          <PopupFolder
+            onClose={() => setShowPopup(false)}
+            onCreate={handleCreateSuccess}
+          />
+        )}
+      </div>
     </div>
   );
 }

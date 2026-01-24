@@ -7,7 +7,12 @@
   --text-blue: #76a6ff;
   --text-red: #ff7676;
   --bg-light: #e0e0e0;
+  --nav-color: #353535;
+  --footer-color: var(--nav-color);
+  --footer-heigh: 50px;
+  --nav-height: 70px
 }
+
 
 /* === Globales Reset === */
 body {
@@ -20,19 +25,44 @@ body {
 /* === Layout === */
 .main-layout {
   display: flex;
-  height: 100vh;
+  flex: 1;
 }
 
 .sidebar {
   background-color: var(--bg-sidebar);
-  padding: 1rem;
   width: 250px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--nav-height) - var(--footer-heigh));
+  border-right: 1px solid var(--border-color);
+  padding: 0.5rem;
   box-sizing: border-box;
+  min-height: 0;
+  /* critical for Chrome/Brave scrolling */
+}
+
+.sidebar-button {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  /* make sure it’s above scrolling content */
+  margin-bottom: 10px;
+}
+
+.sidebar-folders {
+  flex: 1;
+  /* take all remaining space */
+  overflow-y: auto;
+  /* enable scrolling */
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-right: 1px solid var(--border-color);
+  padding-right: 5px;
+  /* optional, prevent scrollbar overlap */
+  min-height: 0;
+  /* critical for Chrome/Brave scrolling */
 }
+
 
 /* === Buttons === */
 button {
@@ -48,6 +78,7 @@ button {
 .new-note-btn {
   border-color: var(--text-green);
   color: var(--text-green);
+  width: 100%;
 }
 
 .create-btn {
@@ -68,7 +99,6 @@ button {
 .delete-btn {
   color: var(--text-red);
   border: 1px solid var(--text-red);
-  margin-top: 10px;
 }
 
 /* === Folder Item === */
@@ -77,12 +107,31 @@ button {
   padding: 8px;
   cursor: pointer;
   border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  min-height: 40px;
+  align-items: center;
+
+  /* Make sure content doesn't wrap */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-item span {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* === Main Content === */
 .main-content {
-  flex: 1;
   padding: 1rem;
+  padding: 1rem;
+  flex: 1;
+  /* add this */
+  min-height: 0;
 }
 
 .header {
@@ -165,4 +214,219 @@ button {
   border: none;
   background: none;
   cursor: pointer;
+}
+
+/* ==========================================
+   AUTH PAGES & FORMS
+   ========================================== */
+
+.auth-page {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.auth-container {
+  background: rgb(92, 91, 91);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 820px;
+
+}
+
+.auth-form h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #282c34;
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.auth-links p {
+  margin: 0.5rem 0;
+  color: #b6b6b6;
+}
+
+.auth-links a {
+  color: #61dafb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* Form Input Success State */
+.form-input--success {
+  border-color: #28a745;
+}
+
+/* Form Input Success State */
+.form-input--error {
+  border-color: #a72828;
+}
+
+/* Required Star */
+.required {
+  color: #dc3545;
+}
+
+.form-input {
+  color: black;
+}
+
+
+/* ===================================
+   NAVIGATION STYLES
+   =================================== */
+.layout-header-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+  padding: 15px 0;
+  flex-wrap: wrap;
+}
+
+.layout-header-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.layout-header-nav a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Logout Button Hover Effect */
+.layout-header-nav button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  transition: all 0.2s;
+}
+
+
+/* ===================================
+   HEADER STYLES
+   =================================== */
+.App-header {
+  padding-left: 20px;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--nav-color);
+  padding-right: 10px;
+}
+
+.Header-2 {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* ===================================
+   ADMIN USERS TABLE
+   =================================== */
+
+.admin-users-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.admin-users-container h2 {
+  margin-bottom: 20px;
+  color: var(--text-green);
+}
+
+.admin-table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 12px;
+  background-color: var(--bg-sidebar);
+  color: var(--text-blue);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Inputs inside table */
+.admin-table input {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: none;
+  background-color: var(--bg-light);
+  color: black;
+  box-sizing: border-box;
+}
+
+/* Reuse your existing button styles */
+.admin-table .update-btn {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+
+/* Login table tweaks */
+.auth-table-container {
+  max-width: 700px;
+}
+
+.table-error {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--text-red);
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.layout-main-content {
+  flex: 1;
+  /* take all remaining space between header and footer */
+}
+
+.layout-footer {
+  background-color: var(--nav-color);
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  padding: 0px 20px;
+  height: var(--footer-heigh);
 }
