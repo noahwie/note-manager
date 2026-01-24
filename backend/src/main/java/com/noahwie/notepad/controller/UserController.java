@@ -12,19 +12,20 @@ import org.springframework.web.bind.annotation.*;
 // Todo: PreAuthorize
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     private final AppUserService appUserService;
     public UserController(final AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("")
     public AppUser getUser(@AuthenticationPrincipal AppUser appUser) {
         return appUserService.findByUsername(appUser.getUsername()).get();
     }
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    @PutMapping("/user/password")
+    @PutMapping("/password")
 
     public ResponseEntity<?> updatePassword(@AuthenticationPrincipal AppUser user, @RequestBody ResetPasswordRequestDto request) {
         appUserService.updatePasswordUser(user ,request.getPassword());

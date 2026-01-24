@@ -6,6 +6,7 @@ import com.noahwie.notepad.model.AppUser;
 import com.noahwie.notepad.model.Folder;
 import com.noahwie.notepad.repository.FolderRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -53,9 +54,10 @@ public class FolderService {
      * @param folderDto DTO containing name
      * @return the saved FolderDto
      */
-    public FolderDto createFolder(FolderDto folderDto) {
+    public FolderDto createFolder(@AuthenticationPrincipal AppUser user, FolderDto folderDto) {
         Folder folder = folderMapper.toEntity(folderDto);
         folder.setCreatedAt(LocalDateTime.now());
+        folder.setCreatedBy(user);
         Folder savedFolder = folderRepository.save(folder);
         return folderMapper.toDto(savedFolder);
     }

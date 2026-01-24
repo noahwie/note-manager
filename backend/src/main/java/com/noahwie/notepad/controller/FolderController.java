@@ -54,8 +54,8 @@ private final FolderService folderService;
      * @return the created folder
      */
     @PostMapping
-    public FolderDto createFolder(@RequestBody @Valid FolderDto folderDto) {
-        return folderService.createFolder(folderDto);
+    public FolderDto createFolder(@AuthenticationPrincipal AppUser user, @RequestBody @Valid FolderDto folderDto) {
+        return folderService.createFolder(user,folderDto);
     }
 
     /**
