@@ -5,6 +5,7 @@ import com.noahwie.notepad.dto.RegisterResponseDto;
 import com.noahwie.notepad.model.AppUser;
 import com.noahwie.notepad.repository.AppUserRepository;
 import com.noahwie.notepad.service.AppUserService;
+import com.noahwie.notepad.service.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
