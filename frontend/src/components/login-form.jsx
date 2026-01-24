@@ -71,7 +71,7 @@ const LoginForm = memo(({ onLogin }) => {
                 <td>
                   <input
                     type="text"
-                    placeholder="admin oder admin@quiz.com"
+                    placeholder="username oder email@example.com"
                     value={usernameOrEmail}
                     onChange={(e) => setUsernameOrEmail(e.target.value)}
                     disabled={isLoading}

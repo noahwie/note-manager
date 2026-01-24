@@ -88,11 +88,11 @@ export const getUserData = () => {
  * @param {Object} userData - User Registrierungsdaten
  * @returns {Promise<Object>} Registrierungsbestätigung
  */
-export const register = async (userData) => {
+export const register = async (username, email, password, role = "USER") => {
   try {
-    console.log("📝 Registrierung für:", userData.email);
+    console.log("📝 Registrierung für:", email);
 
-    const response = await API.post("/auth/register", userData);
+    const response = await API.post("/auth/register", {username, email, password, role});
 
     console.log("✅ Registrierung erfolgreich");
     return response.data;

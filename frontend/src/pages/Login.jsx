@@ -52,37 +52,6 @@ const Login = () => {
           <p>Noch kein Account?</p>
           <Link to="/register">Registrieren</Link>
         </div>
-
-        {/* Test Credentials Hinweis */}
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "15px",
-            backgroundColor: "#444444",
-            borderRadius: "4px",
-            fontSize: "14px",
-          }}
-        >
-          <strong>Test-Accounts:</strong>
-          <br />
-          <br />
-          <strong>Admin:</strong>
-          <br />
-          Username: admin
-          <br />
-          Email: admin@quiz.com
-          <br />
-          Passwort: admin123
-          <br />
-          <br />
-          <strong>Normaler User:</strong>
-          <br />
-          Username: test1
-          <br />
-          Email: test1@gmail.com
-          <br />
-          Passwort: test123
-        </div>
       </div>
     </div>
   );

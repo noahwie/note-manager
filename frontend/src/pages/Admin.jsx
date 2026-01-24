@@ -35,7 +35,6 @@ function Admin() {
 
   return (
     <div>
-      <h1>Admin Panel: Users</h1>
       {loading ? (
         <p>Loading...</p>
       ) : (

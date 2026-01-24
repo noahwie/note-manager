@@ -7,7 +7,12 @@
   --text-blue: #76a6ff;
   --text-red: #ff7676;
   --bg-light: #e0e0e0;
+  --nav-color: #353535;
+  --footer-color: var(--nav-color);
+  --footer-heigh: 50px;
+  --nav-height: 70px
 }
+
 
 /* === Globales Reset === */
 body {
@@ -20,18 +25,37 @@ body {
 /* === Layout === */
 .main-layout {
   display: flex;
-  height: 100vh;
+  flex: 1;
 }
 
 .sidebar {
   background-color: var(--bg-sidebar);
   padding: 1rem;
   width: 250px;
-  box-sizing: border-box;
+  /* default width */
   display: flex;
   flex-direction: column;
   gap: 10px;
   border-right: 1px solid var(--border-color);
+  height: calc(100vh - var(--nav-height)- var(--footer-heigh));
+  /* Add scrolling if content is too tall */
+}
+
+.sidebar-button {
+  height: auto;
+  width: auto;
+  position: sticky;
+  top: 0;
+  padding-right: 15px;
+}
+
+.sidebar-folders {
+  flex: 1;
+  height: 100%;
+  gap: 10px;
+  margin-top: 10px;
+  overflow: auto;
+  padding-right: 15px;
 }
 
 /* === Buttons === */
@@ -48,6 +72,7 @@ button {
 .new-note-btn {
   border-color: var(--text-green);
   color: var(--text-green);
+  width: 100%;
 }
 
 .create-btn {
@@ -68,7 +93,6 @@ button {
 .delete-btn {
   color: var(--text-red);
   border: 1px solid var(--text-red);
-  margin-top: 10px;
 }
 
 /* === Folder Item === */
@@ -77,12 +101,31 @@ button {
   padding: 8px;
   cursor: pointer;
   border-radius: 4px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* Make sure content doesn't wrap */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-item span {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* === Main Content === */
 .main-content {
-  flex: 1;
   padding: 1rem;
+  padding: 1rem;
+  flex: 1;
+  /* add this */
+  min-height: 0;
 }
 
 .header {
@@ -272,11 +315,12 @@ button {
    HEADER STYLES
    =================================== */
 .App-header {
-  padding-left: 400px;
+  padding-left: 20px;
+  height: var(--nav-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #28a745;
+  background-color: var(--nav-color);
   padding-right: 10px;
 }
 
@@ -357,4 +401,26 @@ button {
   margin-top: 4px;
   font-size: 0.85rem;
   color: var(--text-red);
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.layout-main-content {
+  flex: 1;
+  /* take all remaining space between header and footer */
+}
+
+.layout-footer {
+  background-color: var(--nav-color);
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  padding: 0px 20px;
+  height: var(--footer-heigh);
 }

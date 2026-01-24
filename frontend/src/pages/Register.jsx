@@ -14,7 +14,8 @@ const Register = () => {
       await register(
         registerData.username,
         registerData.email,
-        registerData.password
+        registerData.password,
+        "USER"
       );
 
       console.log("✅ Registrierung erfolgreich");

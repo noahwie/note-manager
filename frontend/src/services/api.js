@@ -80,9 +80,6 @@ export const getNote = (id) => API.get(`/notes/${id}`);
 export const updateNote = (id, data) => API.put(`/notes/${id}`, data);
 export const deleteNote = (id) => API.delete(`/notes/${id}`);
 
-// missing api
-export const login = (username, password) => console.log('logged in with ', username , ' + ', password); // API.post(`/auth/login, data);
-export const logout = () => console.log('logout'); // API.post(`/auth/logout);
 export const getUsers = () => API.get(`/admin/users`);;
 export const getUser = () => API.get(`/user`)
 

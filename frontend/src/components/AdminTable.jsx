@@ -1,38 +1,16 @@
+// src/components/AdminUsersTable.jsx
 import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { updateUserPasswordAsUser } from "../services/api";
 
-const UserProfile = () => {
-  const { user } = useAuth();
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+function AdminTable({ users, onSetPassword }) {
+  const [passwords, setPasswords] = useState({});
 
-  if (!user) {
-    return <p>No user data found.</p>;
-  }
-
-  const handlePasswordChange = async () => {
-    if (!password) {
-      return alert("Please enter a new password");
-    }
-
-    setLoading(true);
-    try {
-      await updateUserPasswordAsUser(password);
-      alert("Password updated successfully!");
-      setPassword("");
-    } catch (err) {
-      console.error("Failed to update password:", err);
-      alert(err?.message || "Error updating password");
-      setPassword("");
-    } finally {
-      setLoading(false);
-    }
+  const handleChange = (userId, value) => {
+    setPasswords((prev) => ({ ...prev, [userId]: value }));
   };
 
   return (
     <div className="admin-users-container">
-      <h2>User Profile</h2>
+      <h2>Admin – User Management</h2>
 
       <div className="admin-table-wrapper">
         <table className="admin-table">
@@ -41,41 +19,50 @@ const UserProfile = () => {
               <th>ID</th>
               <th>Username</th>
               <th>Email</th>
-              <th>Role</th>
               <th>New Password</th>
               <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-              <td>
-                <input
-                  type="password"
-                  placeholder="New password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </td>
-              <td>
-                <button
-                  className="update-btn"
-                  onClick={handlePasswordChange}
-                  disabled={loading || !password}
-                >
-                  {loading ? "Updating..." : "Update Password"}
-                </button>
-              </td>
-            </tr>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>
+                  <input
+                    type="password"
+                    placeholder="New password"
+                    value={passwords[user.id] || ""}
+                    onChange={(e) =>
+                      handleChange(user.id, e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <button
+                    className="update-btn"
+                    onClick={() =>
+                      onSetPassword(user.id, passwords[user.id])
+                    }
+                  >
+                    Set Password
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+
+        {users.length === 0 && (
+          <p style={{ textAlign: "center", opacity: 0.7 }}>
+            No users found.
+          </p>
+        )}
       </div>
     </div>
   );
-};
+}
 
-export default UserProfile;
+export default AdminTable;

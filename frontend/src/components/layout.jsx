@@ -34,8 +34,8 @@ const Layout = () => {
         <Outlet />
       </main>
       <footer className="layout-footer">
-        <p>© {currentYear} AdonisGmbh. All rights reserved.</p>
-        <p>Made with ❤️ by AdonisGmbh</p>
+        <p>© {currentYear} NoreGmbh. All rights reserved.</p>
+        <p>.𖥔 ݁ ˖🛸── .✦</p>
       </footer>
     </div>
   );
