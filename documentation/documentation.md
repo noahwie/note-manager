@@ -30,19 +30,21 @@ This document contains the full documentation for the Notepad+++ application, cr
   - [Class Diagram](#class-diagram)
     - [Diagram](#diagram)
     - [Entities \& Relationships](#entities--relationships)
+  - [Architecture](#architecture)
+    - [Archithecture Backend](#archithecture-backend)
+    - [Archithecture Frontend](#archithecture-frontend)
+    - [JWT-Auth Flow Diagramm](#jwt-auth-flow-diagramm)
+    - [Tech-Stack](#tech-stack)
+      - [Table](#table)
+      - [Specification](#specification)
   - [REST API](#rest-api)
     - [Overview](#overview-1)
-    - [Archithecture Backend](#archithecture-backend)
     - [Endpoints](#endpoints)
       - [Folder Endpoints](#folder-endpoints)
       - [Note Endpoints](#note-endpoints)
     - [Data Models](#data-models)
       - [Folder (Request/Response)](#folder-requestresponse)
       - [Note (Request/Response)](#note-requestresponse)
-  - [JWT-Auth Flow Diagramm](#jwt-auth-flow-diagramm)
-  - [Tech-Stack](#tech-stack)
-    - [Table](#table)
-    - [Specification](#specification)
   - [Test Plan](#test-plan)
     - [Environment](#environment)
     - [Manual API testing (Postman)](#manual-api-testing-postman)
@@ -279,12 +281,7 @@ One `Note` → belongs to one `Folder`
 
 ---
 
-## REST API
-
-### Overview
-
-The REST API exposes endpoints for managing **folders** and their associated **notes**.  
-Each folder acts as a container for multiple notes, and all CRUD operations are supported.
+## Architecture
 
 ### Archithecture Backend
 
@@ -332,7 +329,85 @@ flowchart LR
     REPO --> DB
 ```
 
-### Endpoints
+### Archithecture Frontend
+
+```mermaid
+```
+
+### JWT-Auth Flow Diagramm
+
+
+```mermaid
+sequenceDiagram
+    participant FE as Frontend
+    participant BE as Backend
+
+    FE->>BE: POST /api/auth/login { email, password }
+    BE->>BE: Validating Credentials
+    BE->>BE: Generate JWT Token
+    BE-->>FE: 200 OK { token, userId, username, role }
+
+    FE->>FE: Saves Token in localStorage
+    FE->>FE: Gets Token from localStorage
+    FE->>BE: GET /folders (Header: Authorization: Bearer <token>)
+    BE->>BE: JwtFilter validating Token 
+    BE->>BE: Extract User from Token
+    BE-->>FE: 200 OK 
+    FE->>FE: Gets Token from localStorage
+    FE->>BE: GET /notes (Header: Authorization: Bearer <token>)
+    BE->>BE: JwtFilter validating Token 
+    BE->>BE: Extract User from Token
+    BE-->>FE: 200 OK 
+```
+
+---
+
+### Tech-Stack
+#### Table
+
+| Tech              | Version           | Usage           |
+| ---               | ---               | ---             |
+| Java              |                   |                 |     
+| Spring Boot       |                   |                 |
+| Spring Security   |                   |                 |
+| JWT               |                   |                 |
+| JPA/Hibernate     |                   |                 |
+| MySQL             |                   |                 |
+| BCrypt            |                   |                 |
+| Maven             |                   |                 |
+| Docker            |                   |                 |
+| Vite
+| React
+| Axios
+
+
+#### Specification
+
+The choice for the Backend was **JAVA** with **Spring Boot** as the Frame Work. 
+
+For Scurity we can use **Spring Security** wich is provided from Spring. A User Logs into the Application and the Backend in the **JWT-Service** a **TOKEN** will be generated and sent to the Frontend. In the Frontend this token will be stored in **LOCAL-Storage**. For every request from the Frontend we send now the token in the **HEADER** for Authentication. In the Backend the **JWT-Filter** validates that token and extract the **USER** from it. 
+
+For the communitcation backend to database we use **JPA-Repositories**. This repository generates **QUERRIES** based on the Function name.
+For the Database itself we choose a **MySQL** inside a **Docker** containers for easy setup.
+**BCrypt** is used to **HASH** passwords so even when a hacker gets access to the database he will not have the plain passwords.
+
+For the Frontend we use **React**. It is more like a library than a full Framework. It is easy to use and allows to get many predefined components from the web.
+
+For the Communication between frontend and backend we use **Axios**. It simplifies API calls, handles responses and errors. It supports headers and tokens. We implemented **interceptors** to handle headers and the token in the header.
+
+**Vite** provides fast dev server and shows the changes almost imideatily in the browser. It also optimizes builds.
+
+
+---
+
+## REST API
+
+### Overview
+
+The REST API exposes endpoints for managing **folders** and their associated **notes**.  
+Each folder acts as a container for multiple notes, and all CRUD operations are supported.
+
+### Endpoints  
 
 #### Folder Endpoints
 
@@ -378,71 +453,6 @@ flowchart LR
 ```
 
 ---
-
-## JWT-Auth Flow Diagramm
-
-
-```mermaid
-sequenceDiagram
-    participant FE as Frontend
-    participant BE as Backend
-
-    FE->>BE: POST /api/auth/login { email, password }
-    BE->>BE: Validating Credentials
-    BE->>BE: Generate JWT Token
-    BE-->>FE: 200 OK { token, userId, username, role }
-
-    FE->>FE: Saves Token in localStorage
-    FE->>FE: Gets Token from localStorage
-    FE->>BE: GET /folders (Header: Authorization: Bearer <token>)
-    BE->>BE: JwtFilter validating Token 
-    BE->>BE: Extract User from Token
-    BE-->>FE: 200 OK 
-    FE->>FE: Gets Token from localStorage
-    FE->>BE: GET /notes (Header: Authorization: Bearer <token>)
-    BE->>BE: JwtFilter validating Token 
-    BE->>BE: Extract User from Token
-    BE-->>FE: 200 OK 
-```
-
----
-
-## Tech-Stack
-### Table
-
-| Tech              | Version           | Usage           |
-| ---               | ---               | ---             |
-| Java              |                   |                 |     
-| Spring Boot       |                   |                 |
-| Spring Security   |                   |                 |
-| JWT               |                   |                 |
-| JPA/Hibernate     |                   |                 |
-| MySQL             |                   |                 |
-| BCrypt            |                   |                 |
-| Maven             |                   |                 |
-| Docker            |                   |                 |
-| Vite
-| React
-| Axios
-
-
-### Specification
-
-The choice for the Backend was **JAVA** with **Spring Boot** as the Frame Work. 
-
-For Scurity we can use **Spring Security** wich is provided from Spring. A User Logs into the Application and the Backend in the **JWT-Service** a **TOKEN** will be generated and sent to the Frontend. In the Frontend this token will be stored in **LOCAL-Storage**. For every request from the Frontend we send now the token in the **HEADER** for Authentication. In the Backend the **JWT-Filter** validates that token and extract the **USER** from it. 
-
-For the communitcation backend to database we use **JPA-Repositories**. This repository generates **QUERRIES** based on the Function name.
-For the Database itself we choose a **MySQL** inside a **Docker** containers for easy setup.
-**BCrypt** is used to **HASH** passwords so even when a hacker gets access to the database he will not have the plain passwords.
-
-For the Frontend we use **React**. It is more like a library than a full Framework. It is easy to use and allows to get many predefined components from the web.
-
-For the Communication between frontend and backend we use **Axios**. It simplifies API calls, handles responses and errors. It supports headers and tokens. We implemented **interceptors** to handle headers and the token in the header.
-
-**Vite** provides fast dev server and shows the changes almost imideatily in the browser. It also optimizes builds.
-
-
 
 ## Test Plan
 
