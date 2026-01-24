@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/protected-route";
 import MainPage from "./pages/MainPage";
 import Admin from "./pages/Admin";
 import UserProfile from "./pages/UserProfile";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         {/* Öffentliche Routes */}
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="forbidden" element={<Forbidden />} />
         {/* Geschützte Routes - nur für eingeloggte User */}
         <Route 

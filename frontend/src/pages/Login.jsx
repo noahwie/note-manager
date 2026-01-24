@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "../components/login-form";
 import { useAuth } from "../contexts/AuthContext";  // ← NEU: Aus Context!
 
@@ -50,7 +50,7 @@ const Login = () => {
 
         <div className="auth-links">
           <p>Noch kein Account?</p>
-          <p>Registrierung kommt später!</p>
+          <Link to="/register">Registrieren</Link>
         </div>
 
         {/* Test Credentials Hinweis */}
@@ -77,11 +77,11 @@ const Login = () => {
           <br />
           <strong>Normaler User:</strong>
           <br />
-          Username: player1
+          Username: test1
           <br />
-          Email: player1@quiz.com
+          Email: test1@gmail.com
           <br />
-          Passwort: player123
+          Passwort: test123
         </div>
       </div>
     </div>
