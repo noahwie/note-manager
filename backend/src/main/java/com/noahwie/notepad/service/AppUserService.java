@@ -55,15 +55,24 @@ public class AppUserService {
         return Optional.empty();
     }
 
-    public AppUser updatePassword (long id, AppUser user) {
-        AppUser existingUser = appUserRepository.findById(id).orElse(null);
-        assert existingUser != null;
+    public void updatePassword (long id, String password) {
+        AppUser user = appUserRepository.findById(id)
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.NOT_FOUND,
+                        "User not found"
+                ));
 
-        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(password));
 
-        AppUser updatedUser = appUserRepository.save(existingUser);
+        appUserRepository.save(user);
+    }
 
-        return updatedUser;
+    public void updatePasswordUser (AppUser user, String password) {
+
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        appUserRepository.save(user);
     }
 
     private boolean isValidEmail(String email) {

@@ -31,8 +31,8 @@ private final FolderService folderService;
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public List<FolderDto> getAllFolders() {
-        return folderService.getAllFolders();
+    public List<FolderDto> getAllFolders(@AuthenticationPrincipal AppUser user) {
+        return folderService.getAllFolders(user);
     }
 
     /**
