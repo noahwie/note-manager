@@ -12,6 +12,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/admin")
 public class AdminController {
     private final AppUserRepository appUserRepository;
     private final AppUserService appUserService;
