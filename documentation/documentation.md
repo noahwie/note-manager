@@ -30,6 +30,7 @@ This document contains the full documentation for the Notepad+++ application, cr
   - [Class Diagram](#class-diagram)
     - [Diagram](#diagram)
     - [Entities \& Relationships](#entities--relationships)
+      - [ERD](#erd)
   - [Architecture](#architecture)
     - [Archithecture Backend](#archithecture-backend)
     - [Archithecture Frontend](#archithecture-frontend)
@@ -266,7 +267,6 @@ It’s a bit like digital sticky notes — but smarter, more structured, and imp
   - `id` (Long): Unique identifier
   - `name` (String): Folder title
   - `createdAt` (Timestamp): Date of creation
-  - **Relationship**: One folder can have many notes
 
 - **Note**
   - `id` (Long): Unique identifier
@@ -274,10 +274,16 @@ It’s a bit like digital sticky notes — but smarter, more structured, and imp
   - `content` (Text): The main text of the note
   - `createdAt` (Timestamp): Date of creation
   - `folderId` (Long): Foreign key referencing the owning folder
+  - `created_by_user_id` (Long): Foreign key referencing the user
 
 **Relationship:**  
 One `Folder` → has many `Note`  
 One `Note` → belongs to one `Folder`
+One `User` → has many `Folder`  
+One `Folder` → belongs to one `User`
+
+#### ERD
+![ERD](/img/ERD.png)
 
 ---
 
@@ -331,7 +337,42 @@ flowchart LR
 
 ### Archithecture Frontend
 
-```mermaid
+```
+src
+│   ├── App.jsx
+│   ├── components
+│   │   ├── AdminTable.jsx
+│   │   ├── button.jsx
+│   │   ├── FolderItem.jsx
+│   │   ├── layout.jsx
+│   │   ├── login-form.jsx
+│   │   ├── navigation.jsx
+│   │   ├── NoteCard.jsx
+│   │   ├── PopupFolder.jsx
+│   │   ├── PopupNote.jsx
+│   │   ├── PopupReadNote.jsx
+│   │   ├── protected-route.jsx
+│   │   ├── register-form.jsx
+│   │   ├── Sidebar.jsx
+│   │   └── __tests__
+│   │       ├── FolderItem.test.jsx
+│   │       ├── NoteCard.test.jsx
+│   │       └── PopupNote.test.jsx
+│   ├── contexts
+│   │   └── AuthContext.jsx
+│   ├── index.css
+│   ├── main.jsx
+│   ├── pages
+│   │   ├── Admin.jsx
+│   │   ├── Forbidden.jsx
+│   │   ├── Login.jsx
+│   │   ├── MainPage.jsx
+│   │   ├── PageNotFound.jsx
+│   │   ├── Register.jsx
+│   │   └── UserProfile.jsx
+│   └── services
+│       ├── api.js
+│       └── auth-service.js
 ```
 
 ### JWT-Auth Flow Diagramm
