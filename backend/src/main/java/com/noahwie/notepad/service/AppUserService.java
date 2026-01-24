@@ -64,7 +64,15 @@ public class AppUserService {
 
         user.setPassword(passwordEncoder.encode(password));
 
-        AppUser updatedUser = appUserRepository.save(user);
+        appUserRepository.save(user);
+    }
+
+    public void updatePasswordUser (AppUser user, String password) {
+
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        appUserRepository.save(user);
     }
 
     private boolean isValidEmail(String email) {
