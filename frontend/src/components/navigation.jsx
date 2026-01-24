@@ -50,7 +50,7 @@ const Navigation = () => {
                 borderRadius: '4px',
                 
             }} onClick={handleAdminClick}>
-            Admin
+            Admin Page
         </button>
         
         </>
@@ -87,13 +87,7 @@ const Navigation = () => {
               Logout
             </button>
           </>
-        ) : (
-            <button>
-                <Link to="/login">Login</Link>
-            </button>
-          // Nicht eingeloggt: Zeige Login Link
-          
-        )}
+        ) : ('')}
       </div>
     </nav>
   );

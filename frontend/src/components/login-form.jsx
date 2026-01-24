@@ -1,51 +1,28 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import Button from "./button";
-import { memo } from "react";
 
 const LoginForm = memo(({ onLogin }) => {
-  // ==========================================
-  // STATES: Formular-Daten
-  // ==========================================
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // ==========================================
-  // STATES: Fehler-Messages
-  // ==========================================
   const [usernameOrEmailError, setUsernameOrEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // ==========================================
-  // STATE: Loading
-  // ==========================================
   const [isLoading, setIsLoading] = useState(false);
 
-  // ==========================================
-  // VALIDATION FUNKTIONEN
-  // ==========================================
-  
-  /**
-   * Username oder Email validieren (flexible!)
-   * Backend prüft ob Username oder Email - wir prüfen nur Grundsätzliches
-   */
   const validateUsernameOrEmail = (value) => {
     if (!value.trim()) {
       setUsernameOrEmailError("Benutzername oder Email ist erforderlich");
       return false;
     }
-    
     if (value.length < 3) {
       setUsernameOrEmailError("Mindestens 3 Zeichen erforderlich");
       return false;
     }
-    
     setUsernameOrEmailError("");
     return true;
   };
 
-  /**
-   * Password validieren
-   */
   const validatePassword = (value) => {
     if (!value) {
       setPasswordError("Passwort ist erforderlich");
@@ -59,131 +36,78 @@ const LoginForm = memo(({ onLogin }) => {
     return true;
   };
 
-  // ==========================================
-  // HANDLER: onChange
-  // ==========================================
-  const handleUsernameOrEmailChange = (e) => {
-    const value = e.target.value;
-    setUsernameOrEmail(value);
-    if (usernameOrEmailError) validateUsernameOrEmail(value);
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handlePasswordChange = (e) => {
-    const value = e.target.value;
-    setPassword(value);
-    if (passwordError) validatePassword(value);
-  };
+    const okUser = validateUsernameOrEmail(usernameOrEmail);
+    const okPass = validatePassword(password);
+    if (!okUser || !okPass || isLoading) return;
 
-  
-// ==========================================
-// HANDLER: Submit
-// ==========================================
-const handleSubmit = async (e) => {  // ← async hinzufügen!
-  e.preventDefault();
-
-  // Alle Felder validieren
-  const usernameOrEmailOk = validateUsernameOrEmail(usernameOrEmail);
-  const passwordOk = validatePassword(password);
-
-  // Bei Fehler abbrechen
-  if (!usernameOrEmailOk || !passwordOk) {
-    return;
-  }
-
-  if (isLoading) return;
-
-  setIsLoading(true);
-
-  // Login-Daten an Parent weitergeben
-  const loginData = {
-    usernameOrEmail: usernameOrEmail,
-    password: password,
-  };
-
-  // Parent-Funktion aufrufen (jetzt mit await!)
-  try {
-    if (onLogin) {
-      await onLogin(loginData);  // ← await hinzufügen!
+    setIsLoading(true);
+    try {
+      await onLogin({ usernameOrEmail, password });
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    // Error wird in Parent behandelt
-    console.error("LoginForm Error:", error);
-    return;
-  } finally {
-    setIsLoading(false);  // ← Jetzt im finally Block!
-  }
-};
-
-
-  // ==========================================
-  // HELPER: CSS Klasse für Input
-  // ==========================================
-  const getInputClassName = (hasError, hasValue) => {
-    let className = "form-input";
-    if (!hasValue) return className;
-    if (hasError) return `${className} form-input--error`;
-    return `${className} form-input--success`;
   };
 
-  // ==========================================
-  // RENDER
-  // ==========================================
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
+    <div className="admin-users-container auth-table-container">
       <h2>Login</h2>
 
-      {/* USERNAME OR EMAIL INPUT */}
-      <div className="form-group">
-        <label htmlFor="usernameOrEmail">
-          Benutzername oder Email <span className="required">*</span>
-        </label>
-        <input
-          type="text"
-          id="usernameOrEmail"
-          value={usernameOrEmail}
-          onChange={handleUsernameOrEmailChange}
-          placeholder="admin oder admin@quiz.com"
-          className={getInputClassName(usernameOrEmailError, usernameOrEmail)}
-          disabled={isLoading}
-        />
-        {usernameOrEmailError && (
-          <span className="error-message">{usernameOrEmailError}</span>
-        )}
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="admin-table-wrapper">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Username / Email</th>
+                <th>Password</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-      {/* PASSWORD INPUT */}
-      <div className="form-group">
-        <label htmlFor="password">
-          Passwort <span className="required">*</span>
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-          placeholder="Mindestens 6 Zeichen"
-          className={getInputClassName(passwordError, password)}
-          disabled={isLoading}
-        />
-        {passwordError && (
-          <span className="error-message">{passwordError}</span>
-        )}
-      </div>
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="admin oder admin@quiz.com"
+                    value={usernameOrEmail}
+                    onChange={(e) => setUsernameOrEmail(e.target.value)}
+                    disabled={isLoading}
+                  />
+                  {usernameOrEmailError && (
+                    <div className="table-error">{usernameOrEmailError}</div>
+                  )}
+                </td>
 
-      {/* SUBMIT BUTTON */}
-      <div className="form-submit">
-        <Button
-          text={isLoading ? "Lädt..." : "Einloggen"}
-          onAnswerClick={() => {
-            console.log("Extra click side effects");
-          }}
-          disabled={isLoading}
-          className="submit-button"
-        />
-      </div>
-    </form>
+                <td>
+                  <input
+                    type="password"
+                    placeholder="Mindestens 6 Zeichen"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isLoading}
+                  />
+                  {passwordError && (
+                    <div className="table-error">{passwordError}</div>
+                  )}
+                </td>
+
+                <td>
+                  <Button
+                    text={isLoading ? "Lädt..." : "Einloggen"}
+                    disabled={isLoading}
+                    className="update-btn"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
   );
 });
 
 export default LoginForm;
-

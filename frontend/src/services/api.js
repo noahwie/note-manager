@@ -84,14 +84,7 @@ export const deleteNote = (id) => API.delete(`/notes/${id}`);
 export const login = (username, password) => console.log('logged in with ', username , ' + ', password); // API.post(`/auth/login, data);
 export const logout = () => console.log('logout'); // API.post(`/auth/logout);
 export const getUsers = () => API.get(`/admin/users`);;
-export const getUser = () => {
-  console.log('Get the userdata')
-  return {
-      "id": 4,
-      "username": "dave",
-      "email": "dave@example.com",
-    }
-}
+export const getUser = () => API.get(`/user`)
 
-export const updateUserPasswordAsUser = (id, password) => API.post(`/admin/users/${id}/password`, { password })
-export const updateUserPasswordAsAdmin = (id, password) => console.log('User updated width the id: ', id , 'with the new password of', password);
+export const updateUserPasswordAsAdmin = (id, password) => API.put(`/admin/users/${id}/password`, { password })
+export const updateUserPasswordAsUser = (password) => API.put(`/user/password`, { password })
