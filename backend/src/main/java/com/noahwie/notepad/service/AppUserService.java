@@ -55,6 +55,17 @@ public class AppUserService {
         return Optional.empty();
     }
 
+    public AppUser updatePassword (long id, AppUser user) {
+        AppUser existingUser = appUserRepository.findById(id).orElse(null);
+        assert existingUser != null;
+
+        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        AppUser updatedUser = appUserRepository.save(existingUser);
+
+        return updatedUser;
+    }
+
     private boolean isValidEmail(String email) {
         return email != null && email.contains("@") && email.length() > 3;
     }

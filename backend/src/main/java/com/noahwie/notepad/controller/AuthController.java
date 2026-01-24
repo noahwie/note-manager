@@ -57,7 +57,6 @@ public class AuthController {
         }
     }
 
-    // TODO: Login endpoints
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto request) {
         try {

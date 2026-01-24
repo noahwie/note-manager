@@ -1,9 +1,12 @@
 package com.noahwie.notepad.controller;
 
 import com.noahwie.notepad.dto.FolderDto;
+import com.noahwie.notepad.model.AppUser;
 import com.noahwie.notepad.service.FolderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +30,7 @@ private final FolderService folderService;
      * @return list of FolderDto
      */
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<FolderDto> getAllFolders() {
         return folderService.getAllFolders();
     }
@@ -38,6 +42,7 @@ private final FolderService folderService;
      * @return FolderDto
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public FolderDto getFolderById(@PathVariable long id) {
         return folderService.getFolderById(id);
     }
