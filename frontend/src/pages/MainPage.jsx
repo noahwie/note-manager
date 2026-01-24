@@ -49,7 +49,7 @@ function MainPage() {
       <div className={`main-content ${showPopup || selectedNote ? "blurred" : ""}`}>
         <div className="header">
           {selectedFolder && (
-            <button onClick={() => setShowPopup(true)} className="new-note-btn">
+            <button onClick={() => setShowPopup(true)} className="new-note-btn" style={{ width: "200px" }}>
               New Note +
             </button>
           )}
@@ -57,7 +57,7 @@ function MainPage() {
 
         <div className="note-grid">
           {notes.map((note) => (
-            <NoteCard key={note.id} note={note} onClick={setSelectedNote} />
+            <NoteCard key={note.id} note={note} onClick={ ()=> setSelectedNote(note)} />
           ))}
         </div>
       </div>
