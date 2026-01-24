@@ -1,7 +1,7 @@
 // src/pages/Admin.jsx
 import { useState, useEffect } from "react";
 import AdminTable from "../components/AdminTable";
-import { getUsers, updateUserPassword } from "../services/api";
+import { getUsers, updateUserPasswordAsAdmin } from "../services/api";
 
 function Admin() {
   const [users, setUsers] = useState([]);
@@ -25,7 +25,7 @@ function Admin() {
 
   const handleSetPassword = async (userId, newPassword) => {
     try {
-      await updateUserPassword(userId, newPassword);
+      await updateUserPasswordAsAdmin(userId, newPassword);
       alert("Password updated!");
     } catch (err) {
       console.error("Failed to update password:", err);

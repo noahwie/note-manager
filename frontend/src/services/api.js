@@ -116,4 +116,14 @@ export const getUsers = () => {
     }
   ]
 };
-export const updateUuser = (id) => console.log('User updated width the id: ', id);
+export const getUser = () => {
+  console.log('Get the userdata')
+  return {
+      "id": 4,
+      "username": "dave",
+      "email": "dave@example.com",
+    }
+}
+
+export const updateUserPasswordAsUser = (id, password, oldPassword) => console.log('User updated width the id: ', id , 'with the new password of', password, 'old pw: ', oldPassword);
+export const updateUserPasswordAsAdmin = (id, password) => console.log('User updated width the id: ', id , 'with the new password of', password);

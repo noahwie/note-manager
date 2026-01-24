@@ -1,8 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Navigation = () => {
   const { isAuthenticated, user, logout } = useAuth();
+
+  const navigate = useNavigate()
+
+  const handleAdminClick = () => {
+    if (isAuthenticated && user.role === 'ADMIN') {
+      navigate("/admin"); // Navigate to protected home
+    } else {
+      navigate("/login"); // Redirect non-authenticated users to login
+    }
+  };
+
+  const handleUserProfileClick = () => {
+    if (isAuthenticated) {
+      navigate("/user"); // Navigate to protected home
+    } else {
+      navigate("/login"); // Redirect non-authenticated users to login
+    }
+  };
+
 
   // Logout Handler
   const handleLogout = () => {
@@ -30,8 +49,8 @@ const Navigation = () => {
                 backgroundColor:'#2a2a2a',
                 borderRadius: '4px',
                 
-            }}>
-            <Link to="/admin">admin</Link>
+            }} onClick={handleAdminClick}>
+            Admin
         </button>
         
         </>
@@ -50,7 +69,7 @@ const Navigation = () => {
               padding: '5px 10px',
               backgroundColor:'#2a2a2a',
               borderRadius: '4px'
-            }}>
+            }} onClick={handleUserProfileClick}>
               👤 {user?.username || 'User'}
             </button>
             <button 
