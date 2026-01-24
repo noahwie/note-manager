@@ -2,6 +2,7 @@ package com.noahwie.notepad.service;
 
 import com.noahwie.notepad.dto.FolderDto;
 import com.noahwie.notepad.mapper.FolderMapper;
+import com.noahwie.notepad.model.AppUser;
 import com.noahwie.notepad.model.Folder;
 import com.noahwie.notepad.repository.FolderRepository;
 import org.springframework.http.HttpStatus;

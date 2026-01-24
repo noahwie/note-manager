@@ -25,4 +25,8 @@ public class FolderDto {
 
     /** List of notes inside this folder. */
     private List<NoteDto> notes;
+
+    private String creatorUsername;
+
+    private Long creatorId;
 }
