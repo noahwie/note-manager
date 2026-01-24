@@ -17,7 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@RestController("/auth")
+@RestController
+@RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
     private final AppUserService appUserService;
@@ -45,7 +46,7 @@ public class AuthController {
             );
             return ResponseEntity.ok(response);
 
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             Map<String, String> errors = new HashMap<>();
             errors.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(errors);

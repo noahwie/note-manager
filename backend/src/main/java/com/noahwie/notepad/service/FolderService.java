@@ -29,8 +29,8 @@ public class FolderService {
      * Retrieves all folders from the database and maps them to DTOs.
      * @return list of all folders as FolderDto
      */
-    public List<FolderDto> getAllFolders() {
-        return folderRepository.findAll()
+    public List<FolderDto> getAllFolders(AppUser user) {
+        return folderRepository.findByCreatedBy(user)
                 .stream()
                 .map(folderMapper::toDto)
                 .toList();

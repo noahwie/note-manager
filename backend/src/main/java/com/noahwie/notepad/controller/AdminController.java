@@ -1,8 +1,10 @@
 package com.noahwie.notepad.controller;
 
+import com.noahwie.notepad.dto.ResetPasswordRequestDto;
 import com.noahwie.notepad.model.AppUser;
 import com.noahwie.notepad.repository.AppUserRepository;
 import com.noahwie.notepad.service.AppUserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +29,9 @@ public class AdminController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/users/{id}/password")
-    public AppUser updatePassword(@PathVariable long id, @RequestBody AppUser appUser) {
-        return appUserService.updatePassword(id, appUser);
+    public ResponseEntity<?> updatePassword(@PathVariable long id, @RequestBody ResetPasswordRequestDto request) {
+        appUserService.updatePassword(id, request.getPassword());
+
+        return ResponseEntity.noContent().build();
     }
 }
