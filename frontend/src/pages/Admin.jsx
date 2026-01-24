@@ -14,7 +14,7 @@ function Admin() {
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
-      setUsers(response); // response.data
+      setUsers(response.data); // response.data
       console.log(response)
     } catch (err) {
       console.error("Error fetching users:", err);

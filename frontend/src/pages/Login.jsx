@@ -16,7 +16,7 @@ const Login = () => {
       await login(loginData.usernameOrEmail, loginData.password);
       
       console.log("✅ Login erfolgreich");
-      navigate("/quiz");
+      navigate("/");
     } catch (err) {
       console.error("❌ Login fehlgeschlagen:", err);
       setError(err.message || "Login fehlgeschlagen");

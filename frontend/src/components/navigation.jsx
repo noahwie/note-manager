@@ -40,7 +40,7 @@ const Navigation = () => {
       {/* ===================================
           GESCHÜTZTE LINKS (nur wenn eingeloggt)
           =================================== */}
-      {isAuthenticated && (
+      {isAuthenticated && user.role === 'ADMIN' &&  (
         <>
         <button style={{ 
                 color: '#ffffffff', 

@@ -11,7 +11,7 @@ function PopupFolder({ onClose, onCreate }) {
     if (!name.trim()) return;
 
     try {
-      await createFolder({ name }); // POST an /folders
+      await createFolder({ name ,  }); // POST an /folders
       onCreate(); // löst Aktualisierung in Sidebar aus
     } catch (error) {
       console.error("Fehler beim Erstellen des Folders:", error);
