@@ -16,7 +16,7 @@ public class WebConfig {
                 registry.addMapping("/**")
                         .allowedOrigins(
                             "http://localhost:5173",
-                            "https://notes.noahwie.ch")
+                            "https://note-manager.noahwie.ch")
                         .allowedMethods("*")
                         .allowedHeaders("*");
             }

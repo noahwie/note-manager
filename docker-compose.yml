@@ -41,7 +41,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_BASE_URL: "https://notes-api.noahwie.ch"
+        VITE_API_BASE_URL: "https://note-manager-api.noahwie.ch"
     container_name: notes-frontend
     restart: unless-stopped
     ports:
