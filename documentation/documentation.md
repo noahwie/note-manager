@@ -68,7 +68,7 @@ This document contains the full documentation for the Notepad+++ application, cr
 
 ### Overview
 
-TWith this app you can create notes and directories for different ideas and project to keep them clean and structured.
+With this app you can create notes and directories for different ideas and project to keep them clean and structured.
 
 Simply create a idea/project directory for example, Holiday trip ideas. Then open that directory and create notes for everything you need to keep track off.
 
@@ -445,10 +445,31 @@ For the Communication between frontend and backend we use **Axios**. It simplifi
 
 ### Overview
 
-The REST API exposes endpoints for managing **folders** and their associated **notes**.  
-Each folder acts as a container for multiple notes, and all CRUD operations are supported.
+The REST API exposes endpoints for managing **users**, **folders**, and their associated **notes**.  
+Authentication is handled via JWT, with role-based access control for user and admin operations.
 
 ### Endpoints  
+
+#### Authentication Endpoints
+
+| Method | Endpoint           | Description                     | Request Body        | Response            |
+| ------ | ------------------ | ------------------------------- | ------------------- | ------------------- |
+| POST   | `/auth/register`  | Register a new user             | RegisterRequestDto | Registered user DTO |
+| POST   | `/auth/login`     | Authenticate user and issue JWT | LoginRequestDto    | JWT + user data     |
+
+#### Admin Endpoints
+
+| Method | Endpoint                    | Description                              | Request Body              | Response           |
+| ------ | --------------------------- | ---------------------------------------- | ------------------------- | ------------------ |
+| GET    | `/admin/users`              | List all registered users (ADMIN only)   | –                         | List of users      |
+| PUT    | `/admin/users/{id}/password`| Reset password of a user (ADMIN only)    | ResetPasswordRequestDto   | 204 No Content     |
+
+#### User Endpoints
+
+| Method | Endpoint          | Description                      | Request Body            | Response        |
+| ------ | ----------------- | -------------------------------- | ----------------------- | --------------- |
+| GET    | `/user`           | Get authenticated user profile  | –                       | AppUser         |
+| PUT    | `/user/password`  | Update own password              | ResetPasswordRequestDto | 204 No Content  |
 
 #### Folder Endpoints
 
@@ -535,23 +556,34 @@ Each folder acts as a container for multiple notes, and all CRUD operations are 
 
 ### Backend Unit Tests (JUnit)
 
-| Test ID | Class / Method                 | Description                                 | Expected Result                    | Status |
-| ------- | ------------------------------ | ------------------------------------------- | ---------------------------------- | ------ |
-| TC11    | FolderService.getAllFolders    | Returns a list of mapped FolderDto objects  | List size matches mock repository  | ✓      |
-| TC12    | FolderService.getFolderById    | Returns single FolderDto                    | DTO with matching ID is returned   | ✓      |
-| TC13    | FolderService.createFolder     | Maps DTO to entity, saves, and returns DTO  | Created folder DTO returned        | ✓      |
-| TC14    | FolderService.deleteFolderById | Deletes folder if it exists                 | Repository delete method is called | ✓      |
-| TC15    | NoteService.getNotesInFolder   | Returns list of notes for a given folder ID | List of NoteDto returned           | ✓      |
-| TC16    | NoteService.getNoteById        | Retrieves single note by ID                 | Matching NoteDto returned          | ✓      |
-| TC17    | NoteService.createNote         | Creates a new Note under an existing folder | Saved NoteDto is returned          | ✓      |
-| TC18    | NoteService.updateNoteById     | Updates existing note content/title         | Changes saved and returned         | ✓      |
-| TC19    | NoteService.deleteNote         | Deletes note if it exists                   | Repository delete called           | ✓      |
-| TC20    | NoteService.deleteNote (fail)  | Throws if note does not exist               | Exception is thrown                | ✓      |
+| Test ID | Class / Method                                   | Description                                                   | Expected Result                              | Status |
+| ------- | ------------------------------------------------ | ------------------------------------------------------------- | -------------------------------------------- | ------ |
+| TC11    | FolderService.getAllFolders                      | Returns a list of mapped FolderDto objects                    | List size matches mock repository            | ✓      |
+| TC12    | FolderService.getFolderById                      | Returns single FolderDto                                      | DTO with matching ID is returned             | ✓      |
+| TC13    | FolderService.createFolder                       | Maps DTO to entity, saves, and returns DTO                    | Created folder DTO returned                  | ✓      |
+| TC14    | FolderService.deleteFolderById                   | Deletes folder if it exists                                   | Repository delete method is called           | ✓      |
+| TC15    | NoteService.getNotesInFolder                     | Returns list of notes for a given folder ID                   | List of NoteDto returned                     | ✓      |
+| TC16    | NoteService.getNoteById                          | Retrieves single note by ID                                   | Matching NoteDto returned                    | ✓      |
+| TC17    | NoteService.createNote                           | Creates a new Note under an existing folder                   | Saved NoteDto is returned                    | ✓      |
+| TC18    | NoteService.updateNoteById                       | Updates existing note content/title                           | Changes saved and returned                   | ✓      |
+| TC19    | NoteService.deleteNote                           | Deletes note if it exists                                     | Repository delete called                     | ✓      |
+| TC20    | NoteService.deleteNote (fail)                    | Throws if note does not exist                                 | Exception is thrown                          | ✓      |
+| TC21    | AppUserService.registerUser                     | Registers a new user with encoded password                    | User saved with hashed password              | ✓      |
+| TC22    | AppUserService.registerUser (username exists)   | Prevents registration when username already exists            | IllegalArgumentException thrown              | ✓      |
+| TC23    | AppUserService.registerUser (email exists)      | Prevents registration when email already exists               | IllegalArgumentException thrown              | ✓      |
+| TC24    | AppUserService.findByEmail                      | Retrieves user by email                                       | Matching AppUser returned                    | ✓      |
+| TC25    | AppUserService.findByUsername                   | Retrieves user by username                                    | Matching AppUser returned                    | ✓      |
+| TC26    | AppUserService.authenticateUser                 | Authenticates user with correct credentials                   | Authenticated user returned                  | ✓      |
+| TC27    | AppUserService.authenticateUser (fail)          | Rejects authentication with incorrect password                | Empty result returned                        | ✓      |
+| TC28    | AppUserService.authenticateUser (not found)    | Handles authentication when user does not exist               | Empty result returned                        | ✓      |
+| TC29    | AppUserService.updatePassword                   | Updates password for existing user                            | Encoded password saved                       | ✓      |
+| TC30    | AppUserService.updatePassword (not found)       | Throws when updating password for non-existent user           | 404 exception is thrown                      | ✓      |
+| TC31    | AppUserService.updatePasswordUser               | Updates password using provided AppUser instance              | Encoded password saved                       | ✓      |
 
 #### Summary
 
-- Total Tests: 10
-- Passed: 10
+- Total Tests: 21
+- Passed: 21
 - Failed: 0
 - Blocked: 0
 

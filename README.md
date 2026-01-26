@@ -6,6 +6,11 @@ A simple note-taking application designed for organizing projects and ideas. Use
 
 ---
 
+## Open in Browser:
+https://note-manager.noahwie.ch
+
+---
+
 ## Features
 
 - Create and manage project/idea folders
