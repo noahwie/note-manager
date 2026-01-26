@@ -5,6 +5,7 @@ This document contains the full documentation for the Notepad+++ application, cr
 ---
 
 ## Table of contents
+
 - [Project Documentation – Notepad+++](#project-documentation--notepad)
   - [Table of contents](#table-of-contents)
   - [Project Idea](#project-idea)
@@ -263,7 +264,6 @@ It’s a bit like digital sticky notes — but smarter, more structured, and imp
 ### Entities & Relationships
 
 - **Folder**
-
   - `id` (Long): Unique identifier
   - `name` (String): Folder title
   - `createdAt` (Timestamp): Date of creation
@@ -283,7 +283,8 @@ One `User` → has many `Folder`
 One `Folder` → belongs to one `User`
 
 #### ERD
-![ERD](/img/ERD.png)
+
+![ERD](./img/ERD.png)
 
 ---
 
@@ -377,7 +378,6 @@ src
 
 ### JWT-Auth Flow Diagramm
 
-
 ```mermaid
 sequenceDiagram
     participant FE as Frontend
@@ -391,42 +391,68 @@ sequenceDiagram
     FE->>FE: Saves Token in localStorage
     FE->>FE: Gets Token from localStorage
     FE->>BE: GET /folders (Header: Authorization: Bearer <token>)
-    BE->>BE: JwtFilter validating Token 
+    BE->>BE: JwtFilter validating Token
     BE->>BE: Extract User from Token
-    BE-->>FE: 200 OK 
+    BE-->>FE: 200 OK
     FE->>FE: Gets Token from localStorage
     FE->>BE: GET /notes (Header: Authorization: Bearer <token>)
-    BE->>BE: JwtFilter validating Token 
+    BE->>BE: JwtFilter validating Token
     BE->>BE: Extract User from Token
-    BE-->>FE: 200 OK 
+    BE-->>FE: 200 OK
+```
+
+---
+
+### State-Management Flow
+
+```
+┌─────────────────────────────────────────┐
+│     AuthContext (Global State)          │
+│  - user: { id, username, email, role }  │
+│  - token: "eyJhbGc..."                  │
+│  - isAuthenticated: true/false          │
+│  - login()                              │
+│  - logout()                             │
+└─────────────────────────────────────────┘
+            │ Provider
+            │ wraps
+            ↓
+┌─────────────────────────────────────────┐
+│           <App />                       │
+│         All Components                  │
+│                                         │
+│  Components consume via:                │
+│  const { user } = useAuth();            │
+└─────────────────────────────────────────┘
 ```
 
 ---
 
 ### Tech-Stack
+
 #### Table
 
-| Tech              | Version           | Usage           |
-| ---               | ---               | ---             |
-| Java              |                   |                 |     
-| Spring Boot       |                   |                 |
-| Spring Security   |                   |                 |
-| JWT               |                   |                 |
-| JPA/Hibernate     |                   |                 |
-| MySQL             |                   |                 |
-| BCrypt            |                   |                 |
-| Maven             |                   |                 |
-| Docker            |                   |                 |
+| Tech            | Version | Usage |
+| --------------- | ------- | ----- |
+| Java            |         |       |
+| Spring Boot     |         |       |
+| Spring Security |         |       |
+| JWT             |         |       |
+| JPA/Hibernate   |         |       |
+| MySQL           |         |       |
+| BCrypt          |         |       |
+| Maven           |         |       |
+| Docker          |         |       |
+
 | Vite
 | React
 | Axios
 
-
 #### Specification
 
-The choice for the Backend was **JAVA** with **Spring Boot** as the Frame Work. 
+The choice for the Backend was **JAVA** with **Spring Boot** as the Frame Work.
 
-For Scurity we can use **Spring Security** wich is provided from Spring. A User Logs into the Application and the Backend in the **JWT-Service** a **TOKEN** will be generated and sent to the Frontend. In the Frontend this token will be stored in **LOCAL-Storage**. For every request from the Frontend we send now the token in the **HEADER** for Authentication. In the Backend the **JWT-Filter** validates that token and extract the **USER** from it. 
+For Scurity we can use **Spring Security** wich is provided from Spring. A User Logs into the Application and the Backend in the **JWT-Service** a **TOKEN** will be generated and sent to the Frontend. In the Frontend this token will be stored in **LOCAL-Storage**. For every request from the Frontend we send now the token in the **HEADER** for Authentication. In the Backend the **JWT-Filter** validates that token and extract the **USER** from it.
 
 For the communitcation backend to database we use **JPA-Repositories**. This repository generates **QUERRIES** based on the Function name.
 For the Database itself we choose a **MySQL** inside a **Docker** containers for easy setup.
@@ -438,7 +464,6 @@ For the Communication between frontend and backend we use **Axios**. It simplifi
 
 **Vite** provides fast dev server and shows the changes almost imideatily in the browser. It also optimizes builds.
 
-
 ---
 
 ## REST API
@@ -448,33 +473,33 @@ For the Communication between frontend and backend we use **Axios**. It simplifi
 The REST API exposes endpoints for managing **users**, **folders**, and their associated **notes**.  
 Authentication is handled via JWT, with role-based access control for user and admin operations.
 
-### Endpoints  
+### Endpoints
 
 #### Authentication Endpoints
 
-| Method | Endpoint           | Description                     | Request Body        | Response            |
-| ------ | ------------------ | ------------------------------- | ------------------- | ------------------- |
-| POST   | `/auth/register`  | Register a new user             | RegisterRequestDto | Registered user DTO |
-| POST   | `/auth/login`     | Authenticate user and issue JWT | LoginRequestDto    | JWT + user data     |
+| Method                                           | Endpoint         | Description                     | Request Body       | Response            |
+| ------------------------------------------------ | ---------------- | ------------------------------- | ------------------ | ------------------- |
+| ![POST](https://img.shields.io/badge/POST-green) | `/auth/register` | Register a new user             | RegisterRequestDto | Registered user DTO |
+| ![POST](https://img.shields.io/badge/POST-green) | `/auth/login`    | Authenticate user and issue JWT | LoginRequestDto    | JWT + user data     |
 
 #### Admin Endpoints
 
-| Method | Endpoint                    | Description                              | Request Body              | Response           |
-| ------ | --------------------------- | ---------------------------------------- | ------------------------- | ------------------ |
-| GET    | `/admin/users`              | List all registered users (ADMIN only)   | –                         | List of users      |
-| PUT    | `/admin/users/{id}/password`| Reset password of a user (ADMIN only)    | ResetPasswordRequestDto   | 204 No Content     |
+| Method                                          | Endpoint                     | Description                            | Request Body            | Response       |
+| ----------------------------------------------- | ---------------------------- | -------------------------------------- | ----------------------- | -------------- |
+| ![GET](https://img.shields.io/badge/GET-purple) | `/admin/users`               | List all registered users (ADMIN only) | –                       | List of users  |
+| ![PUT](https://img.shields.io/badge/PUT-orange) | `/admin/users/{id}/password` | Reset password of a user (ADMIN only)  | ResetPasswordRequestDto | 204 No Content |
 
 #### User Endpoints
 
-| Method | Endpoint          | Description                      | Request Body            | Response        |
-| ------ | ----------------- | -------------------------------- | ----------------------- | --------------- |
-| GET    | `/user`           | Get authenticated user profile  | –                       | AppUser         |
-| PUT    | `/user/password`  | Update own password              | ResetPasswordRequestDto | 204 No Content  |
+| Method                                          | Endpoint         | Description                    | Request Body            | Response       |
+| ----------------------------------------------- | ---------------- | ------------------------------ | ----------------------- | -------------- |
+| ![GET](https://img.shields.io/badge/GET-purple) | `/user`          | Get authenticated user profile | –                       | AppUser        |
+| ![PUT](https://img.shields.io/badge/PUT-orange) | `/user/password` | Update own password            | ResetPasswordRequestDto | 204 No Content |
 
 #### Folder Endpoints
 
-| Method | Endpoint        | Description               | Request Body | Response        |
-| ------ | --------------- | ------------------------- | ------------ | --------------- |
+| Method                                             | Endpoint        | Description               | Request Body | Response        |
+| -------------------------------------------------- | --------------- | ------------------------- | ------------ | --------------- |
 | ![GET](https://img.shields.io/badge/GET-purple)    | `/folders`      | List all folders          | –            | List of folders |
 | ![GET](https://img.shields.io/badge/GET-purple)    | `/folders/{id}` | Get a single folder       | –            | Folder + notes  |
 | ![POST](https://img.shields.io/badge/POST-green)   | `/folders`      | Create new folder         | Folder JSON  | Created folder  |
@@ -482,8 +507,8 @@ Authentication is handled via JWT, with role-based access control for user and a
 
 #### Note Endpoints
 
-| Method | Endpoint              | Description           | Request Body | Response       |
-| ------ | --------------------- | --------------------- | ------------ | -------------- |
+| Method                                             | Endpoint              | Description           | Request Body | Response       |
+| -------------------------------------------------- | --------------------- | --------------------- | ------------ | -------------- |
 | ![GET](https://img.shields.io/badge/GET-purple)    | `/folders/{id}/notes` | Get notes in a folder | –            | List of notes  |
 | ![POST](https://img.shields.io/badge/POST-green)   | `/folders/{id}/notes` | Add note to folder    | Note JSON    | Created note   |
 | ![GET](https://img.shields.io/badge/GET-purple)    | `/notes/{noteId}`     | Get single note       | –            | Note JSON      |
@@ -511,6 +536,44 @@ Authentication is handled via JWT, with role-based access control for user and a
   "content": "Check out Booking.com and compare prices.",
   "createdAt": "2025-06-28T10:15:00Z",
   "folderId": 1
+}
+```
+
+#### Login (Request/Response)
+
+```json
+{
+    "usernameOrEmail":"test2",
+    "password":"test128"
+}
+
+{
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Im5vYWh3aWUiLCJpYXQiOjE3Njk0NTY2MjgsImV4cCI6MTc2OTU0MzAyOH0.x94d1yTl11gRbCfgWJpKzMb3N65Y3Iw59ciz9PQKBXs",
+    "userId": 1,
+    "username": "noahwie",
+    "email": "noahwie@mail.com",
+    "role": "USER",
+    "expiresIn": 86400000,
+    "tokenType": "Bearer"
+}
+```
+
+#### Register (Request/Response)
+
+```json
+{
+    "username": "Test",
+    "email":"test@mail.com",
+    "password":"test123",
+    "role":"USER"
+}
+
+{
+    "id": "*",
+    "username": "Test",
+    "email": "test@mail.com",
+    "role": "USER",
+    "message": "Registration erfolgreich!"
 }
 ```
 
@@ -556,29 +619,29 @@ Authentication is handled via JWT, with role-based access control for user and a
 
 ### Backend Unit Tests (JUnit)
 
-| Test ID | Class / Method                                   | Description                                                   | Expected Result                              | Status |
-| ------- | ------------------------------------------------ | ------------------------------------------------------------- | -------------------------------------------- | ------ |
-| TC11    | FolderService.getAllFolders                      | Returns a list of mapped FolderDto objects                    | List size matches mock repository            | ✓      |
-| TC12    | FolderService.getFolderById                      | Returns single FolderDto                                      | DTO with matching ID is returned             | ✓      |
-| TC13    | FolderService.createFolder                       | Maps DTO to entity, saves, and returns DTO                    | Created folder DTO returned                  | ✓      |
-| TC14    | FolderService.deleteFolderById                   | Deletes folder if it exists                                   | Repository delete method is called           | ✓      |
-| TC15    | NoteService.getNotesInFolder                     | Returns list of notes for a given folder ID                   | List of NoteDto returned                     | ✓      |
-| TC16    | NoteService.getNoteById                          | Retrieves single note by ID                                   | Matching NoteDto returned                    | ✓      |
-| TC17    | NoteService.createNote                           | Creates a new Note under an existing folder                   | Saved NoteDto is returned                    | ✓      |
-| TC18    | NoteService.updateNoteById                       | Updates existing note content/title                           | Changes saved and returned                   | ✓      |
-| TC19    | NoteService.deleteNote                           | Deletes note if it exists                                     | Repository delete called                     | ✓      |
-| TC20    | NoteService.deleteNote (fail)                    | Throws if note does not exist                                 | Exception is thrown                          | ✓      |
-| TC21    | AppUserService.registerUser                     | Registers a new user with encoded password                    | User saved with hashed password              | ✓      |
-| TC22    | AppUserService.registerUser (username exists)   | Prevents registration when username already exists            | IllegalArgumentException thrown              | ✓      |
-| TC23    | AppUserService.registerUser (email exists)      | Prevents registration when email already exists               | IllegalArgumentException thrown              | ✓      |
-| TC24    | AppUserService.findByEmail                      | Retrieves user by email                                       | Matching AppUser returned                    | ✓      |
-| TC25    | AppUserService.findByUsername                   | Retrieves user by username                                    | Matching AppUser returned                    | ✓      |
-| TC26    | AppUserService.authenticateUser                 | Authenticates user with correct credentials                   | Authenticated user returned                  | ✓      |
-| TC27    | AppUserService.authenticateUser (fail)          | Rejects authentication with incorrect password                | Empty result returned                        | ✓      |
-| TC28    | AppUserService.authenticateUser (not found)    | Handles authentication when user does not exist               | Empty result returned                        | ✓      |
-| TC29    | AppUserService.updatePassword                   | Updates password for existing user                            | Encoded password saved                       | ✓      |
-| TC30    | AppUserService.updatePassword (not found)       | Throws when updating password for non-existent user           | 404 exception is thrown                      | ✓      |
-| TC31    | AppUserService.updatePasswordUser               | Updates password using provided AppUser instance              | Encoded password saved                       | ✓      |
+| Test ID | Class / Method                                | Description                                         | Expected Result                    | Status |
+| ------- | --------------------------------------------- | --------------------------------------------------- | ---------------------------------- | ------ |
+| TC11    | FolderService.getAllFolders                   | Returns a list of mapped FolderDto objects          | List size matches mock repository  | ✓      |
+| TC12    | FolderService.getFolderById                   | Returns single FolderDto                            | DTO with matching ID is returned   | ✓      |
+| TC13    | FolderService.createFolder                    | Maps DTO to entity, saves, and returns DTO          | Created folder DTO returned        | ✓      |
+| TC14    | FolderService.deleteFolderById                | Deletes folder if it exists                         | Repository delete method is called | ✓      |
+| TC15    | NoteService.getNotesInFolder                  | Returns list of notes for a given folder ID         | List of NoteDto returned           | ✓      |
+| TC16    | NoteService.getNoteById                       | Retrieves single note by ID                         | Matching NoteDto returned          | ✓      |
+| TC17    | NoteService.createNote                        | Creates a new Note under an existing folder         | Saved NoteDto is returned          | ✓      |
+| TC18    | NoteService.updateNoteById                    | Updates existing note content/title                 | Changes saved and returned         | ✓      |
+| TC19    | NoteService.deleteNote                        | Deletes note if it exists                           | Repository delete called           | ✓      |
+| TC20    | NoteService.deleteNote (fail)                 | Throws if note does not exist                       | Exception is thrown                | ✓      |
+| TC21    | AppUserService.registerUser                   | Registers a new user with encoded password          | User saved with hashed password    | ✓      |
+| TC22    | AppUserService.registerUser (username exists) | Prevents registration when username already exists  | IllegalArgumentException thrown    | ✓      |
+| TC23    | AppUserService.registerUser (email exists)    | Prevents registration when email already exists     | IllegalArgumentException thrown    | ✓      |
+| TC24    | AppUserService.findByEmail                    | Retrieves user by email                             | Matching AppUser returned          | ✓      |
+| TC25    | AppUserService.findByUsername                 | Retrieves user by username                          | Matching AppUser returned          | ✓      |
+| TC26    | AppUserService.authenticateUser               | Authenticates user with correct credentials         | Authenticated user returned        | ✓      |
+| TC27    | AppUserService.authenticateUser (fail)        | Rejects authentication with incorrect password      | Empty result returned              | ✓      |
+| TC28    | AppUserService.authenticateUser (not found)   | Handles authentication when user does not exist     | Empty result returned              | ✓      |
+| TC29    | AppUserService.updatePassword                 | Updates password for existing user                  | Encoded password saved             | ✓      |
+| TC30    | AppUserService.updatePassword (not found)     | Throws when updating password for non-existent user | 404 exception is thrown            | ✓      |
+| TC31    | AppUserService.updatePasswordUser             | Updates password using provided AppUser instance    | Encoded password saved             | ✓      |
 
 #### Summary
 
