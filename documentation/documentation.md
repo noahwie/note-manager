@@ -36,17 +36,23 @@ This document contains the full documentation for the Notepad+++ application, cr
     - [Archithecture Backend](#archithecture-backend)
     - [Archithecture Frontend](#archithecture-frontend)
     - [JWT-Auth Flow Diagramm](#jwt-auth-flow-diagramm)
+    - [State-Management Flow](#state-management-flow)
     - [Tech-Stack](#tech-stack)
       - [Table](#table)
       - [Specification](#specification)
   - [REST API](#rest-api)
     - [Overview](#overview-1)
     - [Endpoints](#endpoints)
+      - [Authentication Endpoints](#authentication-endpoints)
+      - [Admin Endpoints](#admin-endpoints)
+      - [User Endpoints](#user-endpoints)
       - [Folder Endpoints](#folder-endpoints)
       - [Note Endpoints](#note-endpoints)
     - [Data Models](#data-models)
       - [Folder (Request/Response)](#folder-requestresponse)
       - [Note (Request/Response)](#note-requestresponse)
+      - [Login (Request/Response)](#login-requestresponse)
+      - [Register (Request/Response)](#register-requestresponse)
   - [Test Plan](#test-plan)
     - [Environment](#environment)
     - [Manual API testing (Postman)](#manual-api-testing-postman)
@@ -275,6 +281,14 @@ It’s a bit like digital sticky notes — but smarter, more structured, and imp
   - `createdAt` (Timestamp): Date of creation
   - `folderId` (Long): Foreign key referencing the owning folder
   - `created_by_user_id` (Long): Foreign key referencing the user
+
+- **Users**
+  - `id` (Long): Unique identifier
+  - `email` (String): Email of the user
+  - `password` (String): Password of the user
+  - `role` (enum): Role of the user
+  - `username` (String): Name of the user
+  - `version` (Long): Version number
 
 **Relationship:**  
 One `Folder` → has many `Note`  
@@ -663,6 +677,10 @@ Authentication is handled via JWT, with role-based access control for user and a
 | TC25    | Update Note   | Clicking "Edit Note" allows editing; after confirming, note is updated | Updated content is saved and displayed                           | ✓      |
 | TC26    | Delete Note   | Clicking on a note → "Delete" → confirm                                | Note is deleted and removed from the main screen                 | ✓      |
 | TC27    | Delete Folder | Clicking the X button next to a folder and confirming deletion         | Folder is removed from sidebar and all related notes are deleted | ✓      |
+| TC28    | Register | Register a new user with email, username and password         | User get created | ✓      |
+| TC29    | Login | Tying to login into the application with the correct credentials         | User can login sucessfully | ✓      |
+| TC30    | Update password as a user | Go to the user detail and enter a new password         | After a logout, the user should be able to login with the new password | ✓      |
+| TC31    | Update password as a admin | Go to the admin panel and enter a new password for a specific user        | After a logout, the specifci user should be able to login with the new password | ✓      |
 
 #### Summary
 
