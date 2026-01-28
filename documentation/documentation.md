@@ -668,19 +668,19 @@ Authentication is handled via JWT, with role-based access control for user and a
 
 ### Manual Frontend Testing
 
-| Test ID | Feature       | Description                                                            | Expected Result                                                  | Status |
-| ------- | ------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------- | ------ |
-| TC21    | Create Folder | Clicking "New Folder" opens a form; after confirming, folder appears   | New folder is shown in the sidebar                               | ✓      |
-| TC22    | Select Folder | Clicking on a folder in the sidebar                                    | Notes in that folder are shown; "New Note" button visible        | ✓      |
-| TC23    | Create Note   | Clicking "New Note" opens a form; after confirming, note is created    | New note appears in the main area                                | ✓      |
-| TC24    | Read Note     | Clicking on a note                                                     | Note content is displayed                                        | ✓      |
-| TC25    | Update Note   | Clicking "Edit Note" allows editing; after confirming, note is updated | Updated content is saved and displayed                           | ✓      |
-| TC26    | Delete Note   | Clicking on a note → "Delete" → confirm                                | Note is deleted and removed from the main screen                 | ✓      |
-| TC27    | Delete Folder | Clicking the X button next to a folder and confirming deletion         | Folder is removed from sidebar and all related notes are deleted | ✓      |
-| TC28    | Register | Register a new user with email, username and password         | User get created | ✓      |
-| TC29    | Login | Tying to login into the application with the correct credentials         | User can login sucessfully | ✓      |
-| TC30    | Update password as a user | Go to the user detail and enter a new password         | After a logout, the user should be able to login with the new password | ✓      |
-| TC31    | Update password as a admin | Go to the admin panel and enter a new password for a specific user        | After a logout, the specifci user should be able to login with the new password | ✓      |
+| Test ID | Feature                    | Description                                                            | Expected Result                                                                 | Status |
+| ------- | -------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------ |
+| TC21    | Create Folder              | Clicking "New Folder" opens a form; after confirming, folder appears   | New folder is shown in the sidebar                                              | ✓      |
+| TC22    | Select Folder              | Clicking on a folder in the sidebar                                    | Notes in that folder are shown; "New Note" button visible                       | ✓      |
+| TC23    | Create Note                | Clicking "New Note" opens a form; after confirming, note is created    | New note appears in the main area                                               | ✓      |
+| TC24    | Read Note                  | Clicking on a note                                                     | Note content is displayed                                                       | ✓      |
+| TC25    | Update Note                | Clicking "Edit Note" allows editing; after confirming, note is updated | Updated content is saved and displayed                                          | ✓      |
+| TC26    | Delete Note                | Clicking on a note → "Delete" → confirm                                | Note is deleted and removed from the main screen                                | ✓      |
+| TC27    | Delete Folder              | Clicking the X button next to a folder and confirming deletion         | Folder is removed from sidebar and all related notes are deleted                | ✓      |
+| TC28    | Register                   | Register a new user with email, username and password                  | User get created                                                                | ✓      |
+| TC29    | Login                      | Tying to login into the application with the correct credentials       | User can login sucessfully                                                      | ✓      |
+| TC30    | Update password as a user  | Go to the user detail and enter a new password                         | After a logout, the user should be able to login with the new password          | ✓      |
+| TC31    | Update password as a admin | Go to the admin panel and enter a new password for a specific user     | After a logout, the specifci user should be able to login with the new password | ✓      |
 
 #### Summary
 
@@ -691,16 +691,19 @@ Authentication is handled via JWT, with role-based access control for user and a
 
 ### Frontend Unit Tests (Vitest)
 
-| Test ID | Component / Feature | Description                             | Expected Result                       | Status |
-| ------- | ------------------- | --------------------------------------- | ------------------------------------- | ------ |
-| TC28    | NoteCard            | Renders title and triggers onClick      | Note title appears, click is handled  | ✓      |
-| TC29    | FolderItem          | Renders folder and handles delete/click | Name shown, delete and click work     | ✓      |
-| TC30    | PopupNote           | Handles form input and triggers create  | Note is submitted, onCreate is called | ✓      |
+| Test ID | Component / Feature | Description                                    | Expected Result                                         | Status |
+| ------- | ------------------- | ---------------------------------------------- | ------------------------------------------------------- | ------ |
+| TC32    | NoteCard            | Renders title and triggers onClick             | Note title appears, click is handled                    | ✓      |
+| TC33    | FolderItem          | Renders folder and handles delete/click        | Name shown, delete and click work                       | ✓      |
+| TC34    | PopupNote           | Handles form input and triggers create         | Note is submitted, onCreate is called                   | ✓      |
+| TC35    | LoginForm           | Validates input and submits the login data     | Validating errors shown or onLogin called with payload  | ✓      |
+| TC36    | Login Page          | Handles sucessfull login and failed login flow | Redirect on sucess and on error sets the failed message | ✓      |
 
 #### Summary (Frontend Unit)
 
-- Total Tests: 3
-- Passed: 3
+- Test Files: 5
+- Total Tests: 14
+- Passed: 14
 - Failed: 0
 - Blocked: 0
 
