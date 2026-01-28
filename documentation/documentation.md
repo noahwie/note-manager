@@ -307,49 +307,8 @@ One `Folder` → belongs to one `User`
 
 ### Archithecture Backend
 
-```mermaid
-flowchart LR
-    FE["Frontend (React)
-    http://localhost:5173"]
+![Archithecture Backend](./img/backend-arh.png)
 
-    subgraph API["Backend API"]
-        direction LR
-
-        subgraph CTRL["Controller Layer"]
-            direction LR
-            AC[AuthController]
-            QC[QuestionController]
-            GSC[GameSessionController]
-            LC[LeaderboardController]
-        end
-
-        subgraph SVC["Service Layer"]
-            direction LR
-            US[UserService]
-            QS[QuestionService]
-            GSS[GameSessionService]
-            LS[LeaderboardService]
-            JWT[JwtService]
-        end
-
-        subgraph REPO["Repository Layer"]
-            direction LR
-            UR[AppUserRepository]
-            QR[QuestionRepository]
-            GSR[GameSessionRepository]
-            LR[LeaderboardRepository]
-        end
-
-        CTRL --> SVC --> REPO
-    end
-
-    subgraph DOCKER["Docker"]
-        DB[(PostgreSQL)]
-    end
-
-    FE -->|HTTP REST API| CTRL
-    REPO --> DB
-```
 
 ### Archithecture Frontend
 
@@ -393,28 +352,7 @@ src
 
 ### JWT-Auth Flow Diagramm
 
-```mermaid
-sequenceDiagram
-    participant FE as Frontend
-    participant BE as Backend
-
-    FE->>BE: POST /api/auth/login { email, password }
-    BE->>BE: Validating Credentials
-    BE->>BE: Generate JWT Token
-    BE-->>FE: 200 OK { token, userId, username, role }
-
-    FE->>FE: Saves Token in localStorage
-    FE->>FE: Gets Token from localStorage
-    FE->>BE: GET /folders (Header: Authorization: Bearer <token>)
-    BE->>BE: JwtFilter validating Token
-    BE->>BE: Extract User from Token
-    BE-->>FE: 200 OK
-    FE->>FE: Gets Token from localStorage
-    FE->>BE: GET /notes (Header: Authorization: Bearer <token>)
-    BE->>BE: JwtFilter validating Token
-    BE->>BE: Extract User from Token
-    BE-->>FE: 200 OK
-```
+![JWT-Auth Flow](./img/jwt.png)
 
 ---
 
