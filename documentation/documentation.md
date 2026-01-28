@@ -37,6 +37,7 @@ This document contains the full documentation for the Notepad+++ application, cr
     - [Archithecture Frontend](#archithecture-frontend)
     - [JWT-Auth Flow Diagramm](#jwt-auth-flow-diagramm)
     - [State-Management Flow](#state-management-flow)
+    - [Runtime Flow (Login / Logout)](#runtime-flow-login--logout)
     - [Tech-Stack](#tech-stack)
       - [Table](#table)
       - [Specification](#specification)
@@ -420,24 +421,85 @@ sequenceDiagram
 ### State-Management Flow
 
 ```
-┌─────────────────────────────────────────┐
-│     AuthContext (Global State)          │
-│  - user: { id, username, email, role }  │
-│  - token: "eyJhbGc..."                  │
-│  - isAuthenticated: true/false          │
-│  - login()                              │
-│  - logout()                             │
-└─────────────────────────────────────────┘
-            │ Provider
-            │ wraps
-            ↓
-┌─────────────────────────────────────────┐
-│           <App />                       │
-│         All Components                  │
-│                                         │
-│  Components consume via:                │
-│  const { user } = useAuth();            │
-└─────────────────────────────────────────┘
+┌────────────────────────────────────────────────────┐
+│ AuthContext (Global State) │
+│ │
+│ State: │
+│ - user: { id, username, email, role } | null │
+│ - token: string | null │
+│ - isAuthenticated: boolean │
+│ - isLoading: boolean │
+│ │
+│ Functions: │
+│ - login(usernameOrEmail, password) │
+│ - logout() │
+│ - checkAuth() │
+│ │
+│ Persistence: │
+│ - localStorage.authToken │
+│ - localStorage.userData │
+└────────────────────────────────────────────────────┘
+│ AuthProvider
+│ (wraps application)
+↓
+┌────────────────────────────────────────────────────┐
+│ <App /> │
+│ │
+│ Startup: │
+│ - useEffect → checkAuth() │
+│ - Reads token + user from localStorage │
+│ - Sets auth state before rendering children │
+│ │
+│ Conditional Rendering: │
+│ - Shows "Lädt..." while isLoading === true │
+└────────────────────────────────────────────────────┘
+│
+│ useAuth()
+↓
+┌────────────────────────────────────────────────────┐
+│ Any React Component │
+│ │
+│ const { │
+│ user, │
+│ isAuthenticated, │
+│ login, │
+│ logout │
+│ } = useAuth(); │
+│ │
+│ - UI reacts to auth state changes │
+│ - Protected routes check isAuthenticated │
+└────────────────────────────────────────────────────┘
+
+```
+
+---
+
+### Runtime Flow (Login / Logout)
+
+```
+User submits LoginForm
+↓
+Login Page calls:
+login(usernameOrEmail, password)
+↓
+AuthContext.login()
+↓
+apiLogin() → POST /auth/login
+↓
+Token + UserData stored in localStorage
+↓
+AuthContext updates state:
+
+token
+
+user
+
+isAuthenticated = true
+↓
+App re-renders
+↓
+Protected UI becomes accessible
+
 ```
 
 ---
@@ -446,21 +508,33 @@ sequenceDiagram
 
 #### Table
 
-| Tech            | Version | Usage |
-| --------------- | ------- | ----- |
-| Java            |         |       |
-| Spring Boot     |         |       |
-| Spring Security |         |       |
-| JWT             |         |       |
-| JPA/Hibernate   |         |       |
-| MySQL           |         |       |
-| BCrypt          |         |       |
-| Maven           |         |       |
-| Docker          |         |       |
+| Tech                  | Version                      | Usage / Notes                 |
+| --------------------- | ---------------------------- | ----------------------------- |
+| **Java**              | 17                           | Backend runtime               |
+| **Spring Boot**       | 3.5.3                        | Backend framework             |
+| **Spring Security**   | 3.5.3                        | Auth & password encoding      |
+| **Spring Data JPA**   | 3.5.3                        | ORM / database access         |
+| **Hibernate**         | 6.x (via Spring Boot)        | ORM implementation            |
+| **MapStruct**         | 1.6.3                        | DTO mapping                   |
+| **Lombok**            | 1.18.38                      | Code generation / annotations |
+| **MySQL Connector/J** | runtime                      | JDBC driver for MySQL         |
+| **JWT (jjwt)**        | 0.11.5                       | Token-based auth              |
+| **Maven**             | 3.8.1                        | Build tool                    |
+| **H2 Database**       | test scope                   | In-memory DB for tests        |
+| **Node.js**           | v22.17.0     | Frontend runtime              |
+| **npm**               | 11.4.2     | Node package manager          |
+| **React**             | 19.1.0                       | Frontend library              |
+| **React DOM**         | 19.1.0                       | React DOM rendering           |
+| **React Router DOM**  | 7.6.0                        | Routing in React              |
+| **Axios**             | 1.10.0                       | API calls                     |
+| **Vite**              | 7.0.0                        | Frontend build / dev server   |
+| **Vitest**            | 3.2.4                        | Frontend unit tests           |
+| **Babel**             | 7.28.0 / 7.27.1              | JS + React transpiling        |
+| **ESLint**            | 9.29.0                       | Linting / code quality        |
+| **Testing Library**   | React 16.3.2, Jest DOM 6.9.1 | Frontend component testing    |
+| **Jest**              | 30.2.0                       | Frontend testing framework    |
 
-| Vite
-| React
-| Axios
+
 
 #### Specification
 
