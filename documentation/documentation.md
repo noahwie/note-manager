@@ -469,7 +469,6 @@ Protected UI becomes accessible
 | **Vitest**            | 3.2.4                        | Frontend unit tests           |
 | **Babel**             | 7.28.0 / 7.27.1              | JS + React transpiling        |
 | **ESLint**            | 9.29.0                       | Linting / code quality        |
-| **Testing Library**   | React 16.3.2, Jest DOM 6.9.1 | Frontend component testing    |
 | **Jest**              | 30.2.0                       | Frontend testing framework    |
 
 
@@ -736,25 +735,29 @@ Authentication is handled via JWT, with role-based access control for user and a
 1. Clone the repo:
 
 ```bash
-git clone https://github.com/dein-benutzername/notepad---.git
-cd notepad+++
+git clone https://github.com/noahwie/note-manager.git
+cd note-manager
 ```
+**WARNING: do not run root docker compose** otherwise your local set up wont be working.
 
 2. Run MySQL container:
-
+from root
 ```bash
 cd db
 docker compose up -d
 ```
 
 3. Run the Spring Boot application:
-
+from root
 ```bash
 cd backend
+./mvnw clean install
 ./mvnw spring-boot:run
 ```
 
 ### Frontend Setup
+
+Open a new terminal since backend is started in other terminal.
 
 **Requirements:**
 
@@ -764,7 +767,7 @@ cd backend
 **Steps:**
 
 1. Change to frontend directory:
-
+from root
 ```bash
 cd frontend/
 ```
